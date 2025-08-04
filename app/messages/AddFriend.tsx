@@ -24,7 +24,8 @@ export default function AddFriend() {
   }
 
   return (
-    <>
+    <div className='space-y-4 pt-4 border-t'>
+      <h2 className='text-lg font-bold'>Add a friend</h2>
       <div className='flex flex-col gap-4'>
         <Input
           value={username}
@@ -35,6 +36,6 @@ export default function AddFriend() {
         <Button onClick={sendRequest}>Add Friend</Button>
       </div>
       {message && <ErrorInfo message={message} />}
-    </>
+    </div>
   )
 }

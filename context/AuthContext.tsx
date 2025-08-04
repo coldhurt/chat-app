@@ -1,7 +1,7 @@
 'use client'
 
 import React, { createContext, useContext, useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { jwtDecode } from 'jwt-decode'
 
 interface JwtPayload {
@@ -28,6 +28,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [token, setToken] = useState<string | null>(null)
   const [user, setUser] = useState<User | null>(null)
   const router = useRouter()
+  const pathname = usePathname()
 
   // Check if token is expired or invalid
   const getTokenData = (t = token) => {
@@ -71,7 +72,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const logout = () => {
     localStorage.removeItem('token')
     setToken(null)
-    router.push('/login')
+    if (!['/login', '/register'].includes(pathname)) router.push('/login')
   }
 
   return (

@@ -40,6 +40,7 @@ export default function MessagesPage() {
 
   useEffect(() => {
     const handleVisibilityChange = () => {
+      console.log('Visibility changed:', document.hidden)
       setIsTabFocused(!document.hidden)
     }
 
@@ -81,9 +82,8 @@ export default function MessagesPage() {
     socket.on('receive_message', (msg: Message) => {
       if (selectedFriend?._id === msg.sender) {
         setMessages((prev) => [...prev, msg])
-
-        debugger
-        if (Notification.permission === 'granted') {
+        console.log('Received message:', msg, !isTabFocused && Notification.permission === 'granted')
+        if (!isTabFocused && Notification.permission === 'granted') {
           new Notification(`New message from ${selectedFriend.username}`, {
             body: msg.content,
             icon: '/vercel.svg', // optional
@@ -148,29 +148,31 @@ export default function MessagesPage() {
   return (
     <div className='flex h-screen text-sm max-w-6xl mx-auto'>
       {/* Sidebar */}
-      <aside className='w-1/5 min-w-26 border-r  p-4 space-y-6 bg-gray-50 dark:bg-gray-800'>
+      <aside className='w-1/5 min-w-26 border-r p-4 space-y-6 bg-gray-50 dark:bg-gray-800'>
+        <div className='space-y-0.5'>Welcome, {user?.username}</div>
         <h2 className='text-xl font-bold'>Friends</h2>
-
-        <div className='space-y-2'>
-          {friends.map((friend) => (
-            <div
-              key={friend._id}
-              className={clsx(
-                'p-3 rounded cursor-pointer transition-colors hover:bg-gray-200 dark:hover:bg-gray-700',
-                selectedFriend?._id === friend._id &&
-                  'bg-white text-blue-500 dark:bg-gray-900'
-              )}
-              onClick={() => setSelectedFriend(friend)}
-            >
-              {friend.username}
-            </div>
-          ))}
+        <div>
+          {friends.length ? (
+            friends.map((friend) => (
+              <div
+                key={friend._id}
+                className={clsx(
+                  'p-3 rounded cursor-pointer transition-colors hover:bg-gray-200 dark:hover:bg-gray-700',
+                  selectedFriend?._id === friend._id &&
+                    'bg-white text-blue-500 dark:bg-gray-900'
+                )}
+                onClick={() => setSelectedFriend(friend)}
+              >
+                {friend.username}
+              </div>
+            ))
+          ) : (
+            <>No friends</>
+          )}
         </div>
 
-        <div className='space-y-4 pt-4 border-t'>
-          <AddFriend />
-          <FriendRequests />
-        </div>
+        <AddFriend />
+        <FriendRequests />
       </aside>
 
       {/* Chat Pane */}

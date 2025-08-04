@@ -20,7 +20,7 @@ export default function FriendRequests() {
   }
 
   useEffect(() => {
-    let inter = setInterval(fetchRequests, 1000)
+    let inter = setInterval(fetchRequests, 10000)
     return () => clearInterval(inter)
   }, [])
 
@@ -31,7 +31,7 @@ export default function FriendRequests() {
   }
 
   return (
-    <div className='space-y-2'>
+    <div className='space-y-4 pt-4 border-t'>
       <h2 className='text-lg font-bold'>Pending Requests</h2>
       {requests.map((r) => (
         <div

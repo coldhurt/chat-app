@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import { jwtDecode } from 'jwt-decode'
+import { Toaster } from 'sonner'
 
 interface JwtPayload {
   exp?: number
@@ -76,9 +77,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ token, user, login, logout, getTokenData }}>
-      {children}
-    </AuthContext.Provider>
+    <>
+      <Toaster />
+      <AuthContext.Provider
+        value={{ token, user, login, logout, getTokenData }}
+      >
+        {children}
+      </AuthContext.Provider>
+    </>
   )
 }
 

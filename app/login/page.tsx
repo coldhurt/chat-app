@@ -17,11 +17,13 @@ export default function LoginPage() {
     setError('')
     const res = await post('/api/auth/login', { username, password })
 
-    if (res.ok) {
-      const data = await res.json()
-      login(data.token)
-    } else {
-      setError('Login failed. Please check your credentials.')
+    if (res) {
+      if (res.ok) {
+        const data = await res.json()
+        login(data.token)
+      } else {
+        setError('Login failed. Please check your credentials.')
+      }
     }
   }
 
@@ -57,7 +59,9 @@ export default function LoginPage() {
             required
           />
 
-          <Button type='submit' className='w-full'>Login</Button>
+          <Button type='submit' className='w-full'>
+            Login
+          </Button>
         </form>
       </div>
     </div>

@@ -18,7 +18,7 @@ export default function RegisterPage() {
 
     const res = await post('/api/auth/register', { username, password })
 
-    if (res.ok) {
+    if (res && res.ok) {
       redirect('/login')
     } else {
       setError('Register failed')

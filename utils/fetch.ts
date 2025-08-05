@@ -1,16 +1,21 @@
-import { SERVER_URL } from "@/app/config"
+import { SERVER_URL } from '@/app/config'
+import { toast } from 'sonner'
 
 export const post = async (url = '', body = {}, token = '') => {
-  return await fetch(`${SERVER_URL}${url}`, {
-    method: 'POST',
-    headers: token
-      ? {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        }
-      : { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
-  })
+  try {
+    return await fetch(`${SERVER_URL}${url}`, {
+      method: 'POST',
+      headers: token
+        ? {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          }
+        : { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    })
+  } catch (error) {
+    toast.error('Network error, please try again later.')
+  }
 }
 
 export const get = async (url = '', token = '') => {

@@ -14,12 +14,14 @@ export default function AddFriend() {
   const sendRequest = async () => {
     if (!token) return
     const res = await post('/api/friends/add', { target_name: username }, token)
-    if (res.ok) {
-      setMessage('Request sent!')
-      setUsername('')
-    } else {
-      const data = await res.json()
-      setMessage(data.error || 'Failed to send')
+    if (res) {
+      if (res.ok) {
+        setMessage('Request sent!')
+        setUsername('')
+      } else {
+        const data = await res.json()
+        setMessage(data.error || 'Failed to send')
+      }
     }
   }
 
